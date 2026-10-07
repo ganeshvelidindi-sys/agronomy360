@@ -97,12 +97,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [toastNotification, setToastNotification] = useState<Notification | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
-  // Load user and language from localStorage on mount
+  // Load user and language from localStorage on mount, purging dummy test data
   useEffect(() => {
     try {
+      UserDB.purgeFakeAndUnwantedData();
       const savedUser = localStorage.getItem('agronomy360_user');
       if (savedUser) {
-        setUserState(JSON.parse(savedUser));
+        const parsed = JSON.parse(savedUser);
+        const isFake = (parsed.name && (parsed.name.toLowerCase().includes('test') || parsed.name.toLowerCase().includes('dummy') || parsed.name.toLowerCase().includes('fake'))) ||
+          parsed.phone === '1234567890' || parsed.phone === '0000000000';
+        if (isFake && parsed.email?.toLowerCase() !== 'ganeshvelidindi@gmail.com' && parsed.phone !== '9177923765') {
+          localStorage.removeItem('agronomy360_user');
+          setUserState(null);
+        } else {
+          setUserState(parsed);
+        }
       }
       const savedLang = localStorage.getItem('agronomy360_lang') as Language;
       if (['en', 'te', 'hi', 'ta', 'kn', 'mr'].includes(savedLang)) {

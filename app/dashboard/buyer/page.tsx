@@ -290,7 +290,7 @@ export default function BuyerDashboard() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-3.5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-3.5">
             {[
               {
                 href: '/marketplace',
@@ -301,12 +301,28 @@ export default function BuyerDashboard() {
                 bg: 'bg-blue-50 hover:bg-blue-100/70',
               },
               {
+                href: '/track-order',
+                icon: '📍',
+                title: lang === 'te' ? 'లైవ్ ట్రాకింగ్' : 'Track Delivery',
+                sub: lang === 'te' ? 'జొమాటో పిన్ టు పిన్' : 'Zomato Pin-to-Pin',
+                border: 'border-emerald-200',
+                bg: 'bg-emerald-50 hover:bg-emerald-100/70',
+              },
+              {
+                href: '/payments',
+                icon: '💳',
+                title: lang === 'te' ? 'ఎస్క్రో పేమెంట్' : 'Escrow Vault',
+                sub: lang === 'te' ? 'రైతుకు చెల్లింపు' : 'Direct Payments',
+                border: 'border-indigo-200',
+                bg: 'bg-indigo-50 hover:bg-indigo-100/70',
+              },
+              {
                 href: '/videocall',
                 icon: '📹',
                 title: lang === 'te' ? 'వీడియో కాల్' : 'Live Video Call',
                 sub: lang === 'te' ? 'రైతుతో మాట్లాడండి' : 'Inspect Crops Live',
-                border: 'border-emerald-200',
-                bg: 'bg-emerald-50 hover:bg-emerald-100/70',
+                border: 'border-cyan-200',
+                bg: 'bg-cyan-50 hover:bg-cyan-100/70',
               },
               {
                 href: '/market-prices',
@@ -339,14 +355,6 @@ export default function BuyerDashboard() {
                 sub: lang === 'te' ? 'మార్కెట్ సహాయం' : 'Instant Help',
                 border: 'border-indigo-200',
                 bg: 'bg-indigo-50 hover:bg-indigo-100/70',
-              },
-              {
-                href: '/advisor',
-                icon: '🌾',
-                title: lang === 'te' ? 'పంట సీజన్లు' : 'Season Trends',
-                sub: lang === 'te' ? 'హార్వెస్ట్ క్యాలెండర్' : 'Harvest Forecast',
-                border: 'border-teal-200',
-                bg: 'bg-teal-50 hover:bg-teal-100/70',
               },
             ].map((tool, idx) => (
               <Link
@@ -440,8 +448,8 @@ export default function BuyerDashboard() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between md:justify-end gap-4 pt-3 md:pt-0 border-t md:border-t-0 border-gray-100">
-                    <div className="text-left md:text-right">
+                  <div className="flex flex-wrap items-center justify-between md:justify-end gap-3 pt-3 md:pt-0 border-t md:border-t-0 border-gray-100">
+                    <div className="text-left md:text-right mr-1">
                       <span className="text-base font-black text-blue-900 block">
                         ₹{order.totalAmount.toLocaleString()}
                       </span>
@@ -450,19 +458,29 @@ export default function BuyerDashboard() {
                       </span>
                     </div>
 
-                    {order.deliveryStatus !== 'delivered' ? (
-                      <button
-                        onClick={() => handleConfirmDelivery(order.id)}
-                        className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-md shadow-emerald-600/20 flex items-center gap-1.5 transition-all active:scale-95"
+                    <div className="flex items-center gap-2">
+                      <Link
+                        href={`/track-order?orderId=${order.txnId}&crop=${encodeURIComponent(order.cropName)}&amount=${order.totalAmount}&farmer=${encodeURIComponent(order.farmerName)}`}
+                        className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-xs shadow-md shadow-blue-500/20 flex items-center gap-1.5 transition-all active:scale-95"
                       >
-                        <CheckCircle2 size={14} />
-                        <span>{lang === 'te' ? 'డెలివరీ అందింది (Release Funds)' : 'Confirm Delivery'}</span>
-                      </button>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-emerald-700 font-bold text-xs bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
-                        <CheckCircle2 size={14} /> {lang === 'te' ? 'పూర్తయింది' : 'Completed'}
-                      </span>
-                    )}
+                        <MapPin size={13} />
+                        <span>{lang === 'te' ? 'లైవ్ ట్రాకింగ్' : 'Track Order'}</span>
+                      </Link>
+
+                      {order.deliveryStatus !== 'delivered' ? (
+                        <button
+                          onClick={() => handleConfirmDelivery(order.id)}
+                          className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-md shadow-emerald-600/20 flex items-center gap-1.5 transition-all active:scale-95"
+                        >
+                          <CheckCircle2 size={13} />
+                          <span>{lang === 'te' ? 'డెలివరీ అందింది' : 'Release Funds'}</span>
+                        </button>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-emerald-700 font-bold text-xs bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
+                          <CheckCircle2 size={13} /> {lang === 'te' ? 'పూర్తయింది' : 'Completed'}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}

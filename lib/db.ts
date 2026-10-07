@@ -157,6 +157,42 @@ export const UserDB = {
       saveAll(KEYS.USERS, users);
     }
   },
+
+  purgeFakeAndUnwantedData: (): { purgedUsers: number; purgedOrders: number } => {
+    if (typeof window === 'undefined') return { purgedUsers: 0, purgedOrders: 0 };
+    
+    // Clean Users: remove dummy placeholder records
+    const allUsers = getAll<DBUser>(KEYS.USERS);
+    const validUsers = allUsers.filter(u => {
+      if (u.email?.toLowerCase() === 'ganeshvelidindi@gmail.com') return true;
+      if (u.phone === '9177923765') return true;
+      const isTest = 
+        u.name.toLowerCase().includes('dummy') ||
+        u.name.toLowerCase().includes('test') ||
+        u.name.toLowerCase().includes('fake') ||
+        u.phone === '1234567890' ||
+        u.phone === '0000000000';
+      return !isTest;
+    });
+
+    const purgedUsers = allUsers.length - validUsers.length;
+    saveAll(KEYS.USERS, validUsers);
+
+    // Clean Orders: remove test/dummy order entries
+    const allOrders = getAll<DBOrder>(KEYS.ORDERS);
+    const validOrders = allOrders.filter(o => {
+      const isFake = 
+        o.cropName.toLowerCase().includes('test') ||
+        o.buyerName.toLowerCase().includes('test') ||
+        o.farmerName.toLowerCase().includes('test');
+      return !isFake;
+    });
+
+    const purgedOrders = allOrders.length - validOrders.length;
+    saveAll(KEYS.ORDERS, validOrders);
+
+    return { purgedUsers, purgedOrders };
+  },
 };
 
 
