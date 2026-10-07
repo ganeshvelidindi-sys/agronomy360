@@ -1,12 +1,12 @@
 export type Language = 'en' | 'te' | 'hi' | 'ta' | 'kn' | 'mr';
 
 export const LANGUAGES = [
-  { code: 'en' as Language, name: 'English', nativeName: 'English', flag: '🇬🇧' },
-  { code: 'te' as Language, name: 'Telugu', nativeName: 'తెలుగు', flag: '🇮🇳' },
-  { code: 'hi' as Language, name: 'Hindi', nativeName: 'हिंदी', flag: '🇮🇳' },
-  { code: 'ta' as Language, name: 'Tamil', nativeName: 'தமிழ்', flag: '🇮🇳' },
-  { code: 'kn' as Language, name: 'Kannada', nativeName: 'ಕನ್ನಡ', flag: '🇮🇳' },
-  { code: 'mr' as Language, name: 'Marathi', nativeName: 'मराठी', flag: '🇮🇳' },
+  { code: 'en' as Language, name: 'English', nativeName: 'English', badge: 'EN', flag: 'EN' },
+  { code: 'te' as Language, name: 'Telugu', nativeName: 'తెలుగు', badge: 'తె', flag: 'TE' },
+  { code: 'hi' as Language, name: 'Hindi', nativeName: 'हिंदी', badge: 'हि', flag: 'HI' },
+  { code: 'ta' as Language, name: 'Tamil', nativeName: 'தமிழ்', badge: 'த', flag: 'TA' },
+  { code: 'kn' as Language, name: 'Kannada', nativeName: 'ಕನ್ನಡ', badge: 'ಕ', flag: 'KN' },
+  { code: 'mr' as Language, name: 'Marathi', nativeName: 'मराठी', badge: 'म', flag: 'MR' },
 ];
 
 export const T: Record<Language, Record<string, string>> = {
@@ -26,6 +26,7 @@ export const T: Record<Language, Record<string, string>> = {
     prices: 'Market Prices',
     forum: 'Community',
     schemes: 'Govt. Schemes',
+    videocall: 'Live Video Call',
     dashboard: 'Dashboard',
     login: 'Login',
     signup: 'Sign Up',
